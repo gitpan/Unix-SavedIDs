@@ -8,6 +8,11 @@ SYNOPSIS
             my($ruid,$euid,$suid) = getresuid();
             setresuid(10,10,10);
 
+STATUS
+    This is alpha code. I'm going to be using it a lot in production and
+    once I'm comfortable that it's working well I'll up the version number
+    to 1.0 and call it a production release.
+
 DESCRIPTION
     This module is a simple interface to the c routines with the same names.
 
@@ -49,6 +54,11 @@ TODO
 
     2   make build system detect if saved ids are supported and do something
         clever if not
+
+ACKNOWLEDGEMENTS
+    I recently discovered Proc::UID by Paul Fenwick. It does everything that
+    this module does plus more. Sadly, its unmaintained since 2004 and the
+    author specifically states that it is not for production code.
 
 BUGS AND LIMITATIONS
     It should do someting rational on systems without saved ids.

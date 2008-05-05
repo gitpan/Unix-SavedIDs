@@ -1,5 +1,8 @@
 Revision history for Unix-SavedIDs
 
-0.0.1  Fri May  2 12:23:09 2008
+0.1  Fri May  2 12:23:09 2008
        Initial release.
+
+0.2  Monday Apr 5th 2008
+	   Added acknowledgement for Proc::UID
 

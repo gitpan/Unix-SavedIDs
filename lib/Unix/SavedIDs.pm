@@ -8,9 +8,11 @@ BEGIN {
 	our ($VERSION,@ISA,@EXPORT);
 	@ISA    = qw(Exporter);
 	@EXPORT = qw(getresuid getresgid setresuid setresgid);
-	use version; $VERSION = qv('0.1');
+	use version; $VERSION = qv('0.2');
 	use XSLoader;
-	XSLoader::load('Unix::SavedIDs','v0.1');
+	# for some reason using $VERSION in XSLoader::load() blows up 
+	# on my OpenBSD box, so I'm coding it by hand.
+	XSLoader::load('Unix::SavedIDs','v0.2');
 }
 
 1;
@@ -27,6 +29,12 @@ Unix::SavedIDs - interface to unix saved id commands: getresuid(), getresgid(), 
 
 	my($ruid,$euid,$suid) = getresuid();
 	setresuid(10,10,10);
+
+=head1 STATUS
+
+This is alpha code.  I'm going to be using it a lot in production and once I'm
+comfortable that it's working well I'll up the version number to 1.0 and call
+it a production release.
 
 =head1 DESCRIPTION
 
@@ -77,6 +85,12 @@ make build system detect if saved ids are supported and do something
 clever if not
 
 =back
+
+=head1 ACKNOWLEDGEMENTS
+
+I recently discovered L<Proc::UID> by Paul Fenwick.  It does everything that
+this module does plus more.  Sadly, its unmaintained since 2004 and the author
+specifically states that it is not for production code.
 
 =head1 BUGS AND LIMITATIONS
 
