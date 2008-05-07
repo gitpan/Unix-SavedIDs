@@ -8,11 +8,11 @@ BEGIN {
 	our ($VERSION,@ISA,@EXPORT);
 	@ISA    = qw(Exporter);
 	@EXPORT = qw(getresuid getresgid setresuid setresgid);
-	use version; $VERSION = qv('0.2');
+	$VERSION = '0.3.0_00';
 	use XSLoader;
 	# for some reason using $VERSION in XSLoader::load() blows up 
 	# on my OpenBSD box, so I'm coding it by hand.
-	XSLoader::load('Unix::SavedIDs','v0.2');
+	XSLoader::load('Unix::SavedIDs',$VERSION);
 }
 
 1;
@@ -60,16 +60,25 @@ on failure.
 
 Sets the current I<ruid>, I<euid> and I<suid> or croaks on failure.  
 
-If you pass fewer than three args, the values corresponding to unspecified args
-will not be changed.  E.G. if you call C<setresuid(10,20)>, you will change the
-I<ruid> and I<euid> but the I<suid> will not change.  If this is what you want, you're
-probably better off using $<,$> etc...  setresgid behaves in the same way.
+Any arguments which are unset,undef or -1 tells setresuid to leave that value unchanged.  E.G.
+
+  setresuid(500);
+  setresuid(500,undef,undef);
+  setresuid(500,-1,-1);
+
+... all will set the I<ruid> to 500 and leave the I<euid> and I<suid> alone and:
+
+  setresuid(undef,undef,500)
+
+... will set your I<suid> to 500 and leave your I<ruid> and I<euid> unchanged.
+
+setresgid behaves in the same way.
 
 =head2 setresgid(I<rgid>,I<egid>,I<sgid>)
 
 Sets the current I<rgid>, I<egid> and I<sgid> or croaks on failure.  
 
-Please see setresuid() above for information on what happens when you specify fewer than 3 args.  
+Please see setresuid() above to see how to leave an id unchanged.
 
 =head1 TODO
 

@@ -36,18 +36,28 @@ INTERFACE
 
     Sets the current *ruid*, *euid* and *suid* or croaks on failure.
 
-    If you pass fewer than three args, the values corresponding to
-    unspecified args will not be changed. E.G. if you call
-    `setresuid(10,20)', you will change the *ruid* and *euid* but the *suid*
-    will not change. If this is what you want, you're probably better off
-    using $<,$> etc... setresgid behaves in the same way.
+    Any arguments which are unset,undef or -1 tells setresuid to leave that
+    value unchanged. E.G.
+
+      setresuid(500);
+      setresuid(500,undef,undef);
+      setresuid(500,-1,-1);
+
+    ... all will set the *ruid* to 500 and leave the *euid* and *suid* alone
+    and:
+
+      setresuid(undef,undef,500)
+
+    ... will set your *suid* to 500 and leave your *ruid* and *euid*
+    unchanged.
+
+    setresgid behaves in the same way.
 
   setresgid(*rgid*,*egid*,*sgid*)
 
     Sets the current *rgid*, *egid* and *sgid* or croaks on failure.
 
-    Please see setresuid() above for information on what happens when you
-    specify fewer than 3 args.
+    Please see setresuid() above to see how to leave an id unchanged.
 
 TODO
     1   make more complete test suite
