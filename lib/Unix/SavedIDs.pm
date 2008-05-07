@@ -8,7 +8,7 @@ BEGIN {
 	our ($VERSION,@ISA,@EXPORT);
 	@ISA    = qw(Exporter);
 	@EXPORT = qw(getresuid getresgid setresuid setresgid);
-	$VERSION = '0.3.0_00';
+	$VERSION = '0.3.0_01';
 	use XSLoader;
 	# for some reason using $VERSION in XSLoader::load() blows up 
 	# on my OpenBSD box, so I'm coding it by hand.
@@ -80,21 +80,6 @@ Sets the current I<rgid>, I<egid> and I<sgid> or croaks on failure.
 
 Please see setresuid() above to see how to leave an id unchanged.
 
-=head1 TODO
-
-=over 4
-
-=item 1 
-
-make more complete test suite
-
-=item 2 
-
-make build system detect if saved ids are supported and do something
-clever if not
-
-=back
-
 =head1 ACKNOWLEDGEMENTS
 
 I recently discovered L<Proc::UID> by Paul Fenwick.  It does everything that
@@ -103,7 +88,8 @@ specifically states that it is not for production code.
 
 =head1 BUGS AND LIMITATIONS
 
-It should do someting rational on systems without saved ids.  
+Installer doesn't check directly for saved ids.  Instead it assumes 
+anything non posix won't do saved ids.  That isn't necessarily true.
 
 I only have Linux and OpenBSD systems to test on, so I have no idea how it
 might work on other operating systems.  If you run a different OS, please let

@@ -59,19 +59,14 @@ INTERFACE
 
     Please see setresuid() above to see how to leave an id unchanged.
 
-TODO
-    1   make more complete test suite
-
-    2   make build system detect if saved ids are supported and do something
-        clever if not
-
 ACKNOWLEDGEMENTS
     I recently discovered Proc::UID by Paul Fenwick. It does everything that
     this module does plus more. Sadly, its unmaintained since 2004 and the
     author specifically states that it is not for production code.
 
 BUGS AND LIMITATIONS
-    It should do someting rational on systems without saved ids.
+    Installer doesn't check directly for saved ids. Instead it assumes
+    anything non posix won't do saved ids. That isn't necessarily true.
 
     I only have Linux and OpenBSD systems to test on, so I have no idea how
     it might work on other operating systems. If you run a different OS,

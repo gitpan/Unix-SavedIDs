@@ -1,14 +1,23 @@
 Revision history for Unix-SavedIDs
 
 0.1  Fri May  2 12:23:09 2008
-       Initial release.
+	Initial release.
 
 0.2  Monday May 5th 2008
-	   Added acknowledgement for Proc::UID
+   Added acknowledgement for Proc::UID
 
-0.3  Wed May 7th 2008
-		switched from create_makefile_pl('traditional') to 
-			create_makefile('passthrough')
-		added some OS dection logic to Build.PL
+0.3.0_00  Wed May 7th 2008
+	- switched from create_makefile_pl('traditional') to 
+		create_makefile('passthrough')
+	- added some OS dection logic to Build.PL
+	- setresXXX now handles undef values as well as less than 3 args
+	- updated pod
+	- added lots more tests
+	- switched from version.pm to string.  Too many of my boxen
+		don't have version installed yet.
+	- adopted 3 digit with underscore version scheme as mentioned
+			in the version.pm docs.
 
-
+0.3.0_01 Wed May 7th 2008
+	- if I don't use version.pm I sholdn't require it in my Build.PL
+		
