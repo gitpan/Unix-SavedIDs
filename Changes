@@ -20,4 +20,9 @@ Revision history for Unix-SavedIDs
 
 0.3.0_01 Wed May 7th 2008
 	- if I don't use version.pm I sholdn't require it in my Build.PL
+
+0.003001 Thurs May 8th 2008
+	- I am having troubles with versions!
 		
+0.3.2 Thurs May 8th 2008
+	- Gave up on life without version.pm

@@ -8,7 +8,7 @@ BEGIN {
 	our ($VERSION,@ISA,@EXPORT);
 	@ISA    = qw(Exporter);
 	@EXPORT = qw(getresuid getresgid setresuid setresgid);
-	$VERSION = '0.3.1';
+	use version ; $VERSION = qv('0.3.2');
 	use XSLoader;
 	# for some reason using $VERSION in XSLoader::load() blows up 
 	# on my OpenBSD box, so I'm coding it by hand.
