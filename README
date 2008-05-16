@@ -16,12 +16,42 @@ STATUS
 DESCRIPTION
     This module is a simple interface to the c routines with the same names.
 
+    If you want to drop root privileges, see Unix::SetUser. This provides a
+    simple interface, uses Unix::SavedIDs to handle saved ids, handles
+    supplemental groups and generally makes dropping root privileges easy
+    and secure.
+
+    If you want to drop root privileges, use Unix::SetUser or this module,
+    Unix::SavedIDs. Seriously.
+
     $<, $>, $(, $) and the POSIX setuid(),seteuid etc... functions give you
     access to the real uid/gid (ruid/rgid) and effective uid/gid
     (*euid*/*egid*), but there was no way to get or set the saved uid/gid
     (*suid*/*sgid*).
 
-INTERFACE
+WHY THIS MATTERS
+            # start as root
+            die if $> != 0;
+            # I think this should drop root 
+            $( = 50;
+            $) = "50 50";
+            $> = 50;
+            $< = 50;
+            # Make sure I dropped root
+            print "\$< = $<\n";
+            print "\$> = $>\n";
+            # I really dropped root, right?  
+            # So, I can't possibly switch back.
+            $< = 0;
+            $> = 0;
+            print "\$< = $<\n";
+            print "\$> = $>\n";
+            # oh crap....
+
+    The effective user id changed back to root. If someone cracks your
+    script, they can get root.
+
+FUNCTIONS
   getresuid()
 
     returns a list of 3 elements, the current *ruid*, *euid* and *suid* or
@@ -59,7 +89,7 @@ INTERFACE
 
     Please see setresuid() above to see how to leave an id unchanged.
 
-ACKNOWLEDGEMENTS
+ACKNOWLEDGMENTS
     I recently discovered Proc::UID by Paul Fenwick. It does everything that
     this module does plus more. Sadly, its unmaintained since 2004 and the
     author specifically states that it is not for production code.

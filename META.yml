@@ -1,6 +1,6 @@
 ---
 name: Unix-SavedIDs
-version: 0.3.2
+version: 0.4.0
 author:
   - 'Dylan Martin <dmartin@sccd.ctc.edu>'
 abstract: 'interface to unix saved id commands: getresuid(), getresgid(), setresuid() and setresgid()'
@@ -9,10 +9,13 @@ resources:
   license: http://www.opensource.org/licenses/bsd-license.php
 requires:
   Test::More: 0
-  version: 0
+  version: 0.7203
 provides:
   Unix::SavedIDs:
     file: lib/Unix/SavedIDs.pm
+    version: 0.4.0
+  Unix::SetUser:
+    file: lib/Unix/SetUser.pm
     version: 0.3.2
 generated_by: Module::Build version 0.2808
 meta-spec:

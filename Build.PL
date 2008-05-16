@@ -2,6 +2,7 @@ use strict;
 use warnings;
 use Module::Build;
 use Config;
+use Data::Dumper;
 
 my $builder = Module::Build->new(
     module_name         => 'Unix::SavedIDs',
@@ -10,11 +11,18 @@ my $builder = Module::Build->new(
     dist_version_from   => 'lib/Unix/SavedIDs.pm',
     requires => {
         'Test::More' => 0,
-		'version'	 => 0,
+		'version'	 => 0.7203, # 0.6701 doesn't work & 0.7203 is the 
+								# oldest one I have to test with
+								# if you have an older one and Unix::SavedIDs
+								# passes it's tests, let me know and I'll change
+								# this
     },
     add_to_cleanup      => [ 'Unix-SavedIDs-*', ],
 	create_makefile_pl	=> 'passthrough',
 	create_readme		=> 1,
+	get_options			=> { 'touchtestok' => {},
+							 'wibble' => {}
+						 },
 );
 
 # is unixish is only in recent versions of Module::Build
@@ -59,6 +67,18 @@ elsif ( $^O eq 'openbsd' ) {
 else {
 	print "Unix::SavedIDs hasn't been tested on $^O, please"
 			." contact dmartin\@cpan.org and let me know how it works\n";
+}
+
+my $prompt = "Do I have permission to run a"
+		." test that will touch and unlink a randomly named, currenly"
+		." non-existant file in your /tmp dir? (Y/N)";
+if ( $builder->args('touchtestok') ) {
+	print $prompt." [Y ]\nY\n";
+	$builder->notes(touchtest_ok => 'Y');
+}
+else {
+	my $touchtest_ok = $builder->prompt($prompt ,'N');
+	$builder->notes(touchtest_ok => $touchtest_ok);
 }
 
 $builder->create_build_script();

@@ -26,3 +26,6 @@ Revision history for Unix-SavedIDs
 		
 0.3.2 Thurs May 8th 2008
 	- Gave up on life without version.pm
+
+0.4.0 Fri May 9th 2008
+	- Added SetUser to this distro

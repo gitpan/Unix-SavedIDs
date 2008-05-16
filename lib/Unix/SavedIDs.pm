@@ -2,17 +2,59 @@ package Unix::SavedIDs;
 
 use strict;
 use warnings;
+use Carp;
+use Data::Dumper;
+use constant { 
+			TYPE_UID => 0,
+			TYPE_GID => 1,
+			 };
+
+our $DEBUG = 0;
 
 BEGIN {
 	use Exporter ();
 	our ($VERSION,@ISA,@EXPORT);
 	@ISA    = qw(Exporter);
-	@EXPORT = qw(getresuid getresgid setresuid setresgid);
-	use version ; $VERSION = qv('0.3.2');
+	@EXPORT = qw(getresuid getresgid setresuid setresgid 
+				);
+	use version ; $VERSION = qv('0.4.0');
 	use XSLoader;
-	# for some reason using $VERSION in XSLoader::load() blows up 
-	# on my OpenBSD box, so I'm coding it by hand.
 	XSLoader::load('Unix::SavedIDs',$VERSION);
+}
+
+sub setresuid {
+	my @args = eval {_clean_args(@_) };
+	if ( $@ ) {
+		croak "setresuid(): $@";
+	} 
+	_setresuid(@args);
+} 
+
+sub setresgid {
+	my @args = eval {_clean_args(@_) };
+	if ( $@ ) {
+		croak "setresgid(): $@";
+	} 
+	_setresgid(@args);
+} 
+
+sub _clean_args {
+	my @args = @_;
+	my $is_int = qr/^-?\d+$/o;
+	for my $num ( 0 .. 2 ) {
+		if ( !exists($args[$num]) || !defined($args[$num]) ) {
+			$args[$num] = -1;
+		}
+		else {
+			if ( $args[$num] !~ $is_int ) {
+				croak 'bad arg \''.$args[$num].'\'. Must be int.'."\n";
+			}
+		}
+	}
+	if (@args != 3) {
+		die "_clean_args should always produce 3 args.  THIS IS A BUG!";
+	}
+	return @args;
 }
 
 1;
@@ -35,26 +77,55 @@ Unix::SavedIDs - interface to unix saved id commands: getresuid(), getresgid(), 
 This is alpha code.  I'm going to be using it a lot in production and once I'm
 comfortable that it's working well I'll up the version number to 1.0 and call
 it a production release.
-
+	
 =head1 DESCRIPTION
 
 This module is a simple interface to the c routines with the same names.
+
+If you want to drop root privileges, see L<Unix::SetUser>.  This provides a
+simple interface, uses Unix::SavedIDs to handle saved ids, handles supplemental
+groups and generally makes dropping root privileges easy and secure.
+
+If you want to drop root privileges, use L<Unix::SetUser> or this module, Unix::SavedIDs.  Seriously.
 
 $<, $>, $(, $) and the POSIX setuid(),seteuid etc... functions give you 
 access to the real uid/gid (ruid/rgid) and effective uid/gid (I<euid>/I<egid>), 
 but there was no way to get or set the saved uid/gid (I<suid>/I<sgid>).
 
-=head1 INTERFACE 
+=head1 WHY THIS MATTERS
+	
+	# start as root
+	die if $> != 0;
+	# I think this should drop root 
+  	$( = 50;
+	$) = "50 50";
+	$> = 50;
+	$< = 50;
+	# Make sure I dropped root
+	print "\$< = $<\n";
+	print "\$> = $>\n";
+	# I really dropped root, right?  
+	# So, I can't possibly switch back.
+	$< = 0;
+	$> = 0;
+	print "\$< = $<\n";
+	print "\$> = $>\n";
+	# oh crap....
 
+The effective user id changed back to root.  If someone cracks your script,
+they can get root.
+
+=head1 FUNCTIONS
+	
 =head2 getresuid()
 
-returns a list of 3 elements, the current I<ruid>, I<euid> and I<suid> or croaks 
-on failure.
+returns a list of 3 elements, the current I<ruid>, I<euid> and I<suid> 
+or croaks on failure.
 
 =head2 getresgid()
 
-returns a list of 3 elements, the current I<rgid>, I<egid> and I<sgid> or croaks 
-on failure.
+returns a list of 3 elements, the current I<rgid>, I<egid> and I<sgid> 
+or croaks on failure.
 
 =head2 setresuid(I<ruid>,I<euid>,I<suid>)
 
@@ -80,7 +151,7 @@ Sets the current I<rgid>, I<egid> and I<sgid> or croaks on failure.
 
 Please see setresuid() above to see how to leave an id unchanged.
 
-=head1 ACKNOWLEDGEMENTS
+=head1 ACKNOWLEDGMENTS
 
 I recently discovered L<Proc::UID> by Paul Fenwick.  It does everything that
 this module does plus more.  Sadly, its unmaintained since 2004 and the author

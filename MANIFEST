@@ -3,9 +3,13 @@ Changes
 MANIFEST
 README
 lib/Unix/SavedIDs.pm
+lib/Unix/SetUser.pm
 lib/Unix/SavedIDs.xs
+lib/Unix/typemap
 lib/Unix/ppport.h
 t/00.load.t
-t/01.run.t
+t/10.savedids.t
+t/20.touchtest.t
+t/30.setuser.t
 META.yml
 Makefile.PL
