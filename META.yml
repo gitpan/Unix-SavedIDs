@@ -1,6 +1,6 @@
 ---
 name: Unix-SavedIDs
-version: 0.4.0
+version: 0.4.1
 author:
   - 'Dylan Martin <dmartin@sccd.ctc.edu>'
 abstract: 'interface to unix saved id commands: getresuid(), getresgid(), setresuid() and setresgid()'
@@ -13,10 +13,10 @@ requires:
 provides:
   Unix::SavedIDs:
     file: lib/Unix/SavedIDs.pm
-    version: 0.4.0
+    version: 0.4.1
   Unix::SetUser:
     file: lib/Unix/SetUser.pm
-    version: 0.3.2
+    version: 0.4.0
 generated_by: Module::Build version 0.2808
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.2.html

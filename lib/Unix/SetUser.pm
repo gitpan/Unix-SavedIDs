@@ -5,7 +5,7 @@ package Unix::SetUser;
 use warnings;
 use strict;
 use Carp;
-use Unix::SavedIDs;
+use Unix::SavedIDs "0.4.0";
 use Data::Dumper;
 
 #warn "\@INC = ".join(" ",@INC)."\n";
@@ -20,7 +20,7 @@ BEGIN {
 	our ($VERSION,@ISA,@EXPORT);
 	@ISA    = qw(Exporter);
 	@EXPORT = qw(set_user);
-	use version; $VERSION = qv('0.3.2');
+	use version; $VERSION = qv('0.4.0');
 }
 
 sub set_user {

@@ -17,7 +17,7 @@ BEGIN {
 	@ISA    = qw(Exporter);
 	@EXPORT = qw(getresuid getresgid setresuid setresgid 
 				);
-	use version ; $VERSION = qv('0.4.0');
+	use version ; $VERSION = qv('0.4.1');
 	use XSLoader;
 	XSLoader::load('Unix::SavedIDs',$VERSION);
 }
